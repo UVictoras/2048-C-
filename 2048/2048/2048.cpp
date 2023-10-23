@@ -61,7 +61,19 @@ public:
             }
         }
     }
+};
 
+class Game
+{
+public:
+    int iPoints;
+    Grid gGameGrid;
+
+    Game()
+    {
+        this->iPoints = 0;
+        this->gGameGrid.InitiateGrid();
+    }
 };
 
 int main()
