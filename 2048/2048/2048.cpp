@@ -3,6 +3,24 @@
 
 #include <iostream>
 
+class Tiles
+{
+public:
+    int iValue, iPositionX, iPositionY;
+
+    Tiles()
+    {
+        this->iValue = 2;
+        this->iPositionX = 0;
+        this->iPositionY = 0;
+    }
+
+    ~Tiles()
+    {
+        std::cout << "Tile Destroyed";
+    }
+};
+
 class Case
 {
 public:
