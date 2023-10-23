@@ -65,12 +65,25 @@ public:
 
     void PrintGrid()
     {
-        for (int j = 0; j < 16; j++)
+        for (int j = 0; j < 9; j++)
         {
-            std::cout << this->cGrid[j].iPositionY;
-            if ((j + 1) % 4 == 0)
-                std::cout << "\n";
+            if (i%2 == 0)
+            {
+                if (j%2 != 0)
+                    std::cout << "-";
+                else
+                    std::cout << " ";
+            }
+            else
+            {
+                if (j%2 == 0)
+                    std::cout << "|";
+                else
+                    std::cout << "0";
+            }
         }
+        std::cout << "\n";
+    }
     }
 };
 
