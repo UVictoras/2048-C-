@@ -3,9 +3,20 @@
 
 #include <iostream>
 
-int main()
+void main()
 {
     std::cout << "Hello World!\n";
 }
 
+class Case {
+public : 
+    bool bIsEmpty;
+    int iPositionX, iPositionY;
 
+    Case(int iX, int iY) 
+    {
+        this->bIsEmpty = true;
+        this->iPositionX = iX;
+        this->iPositionY = iY;
+    }
+}
