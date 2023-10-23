@@ -65,25 +65,27 @@ public:
 
     void PrintGrid()
     {
-        for (int j = 0; j < 9; j++)
+        for (int i = 0; i < 9; i++)
         {
-            if (i%2 == 0)
+            for (int j = 0; j < 9; j++)
             {
-                if (j%2 != 0)
-                    std::cout << "-";
+                if (i%2 == 0)
+                {
+                    if (j%2 != 0)
+                        std::cout << "-";
+                    else
+                        std::cout << " ";
+                }
                 else
-                    std::cout << " ";
+                {
+                    if (j%2 == 0)
+                        std::cout << "|";
+                    else
+                        std::cout << "0";
+                }
             }
-            else
-            {
-                if (j%2 == 0)
-                    std::cout << "|";
-                else
-                    std::cout << "0";
-            }
+            std::cout << "\n";
         }
-        std::cout << "\n";
-    }
     }
 };
 
