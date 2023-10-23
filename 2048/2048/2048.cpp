@@ -61,6 +61,16 @@ public:
             }
         }
     }
+
+    void PrintGrid()
+    {
+        for (int j = 0; j < 16; j++)
+        {
+            std::cout << this->cGrid[j].iPositionY;
+            if ((j + 1) % 4 == 0)
+                std::cout << "\n";
+        }
+    }
 };
 
 class Game
@@ -81,10 +91,5 @@ int main()
     std::cout << "Hello World!\n";
     Grid grid;
     grid.InitiateGrid();
-    for (int j = 0; j < 16; j++)
-    {
-        std::cout << grid.cGrid[j].iPositionY;
-        if ((j + 1) % 4 == 0)
-            std::cout << "\n";
-    }
+    grid.PrintGrid();
 }
