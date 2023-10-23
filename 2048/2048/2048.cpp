@@ -1,5 +1,6 @@
 // 2048.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
 // C:\Users\vmartinan\source\repos\2048-Cpp\2048\2048
+// C:\Users\barhancet\source\repos\2048-Cpp\2048\2048\2048.cpp
 
 #include <iostream>
 
@@ -84,12 +85,24 @@ public:
         this->iPoints = 0;
         this->gGameGrid.InitiateGrid();
     }
+
+    int UserEntry()
+    {
+        std::cout << "Direction: ";
+        int direction;
+        std::cin >> direction;
+        return direction;
+    }
+
 };
+
 
 int main()
 {
     std::cout << "Hello World!\n";
     Grid grid;
+    Game game;
     grid.InitiateGrid();
     grid.PrintGrid();
+    int direction = game.UserEntry();
 }
