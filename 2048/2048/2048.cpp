@@ -1,61 +1,43 @@
 // 2048.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
 // C:\Users\vmartinan\source\repos\2048-Cpp\2048\2048 C:\Users\vicma\source\repos\2048-Cpp\2048\2048
-// C:\Users\barhancet\source\repos\2048-Cpp\2048\2048\2048.cpp
+// C:\Users\barhancet\source\repos\2048-Cpp\2048\2048\2048.cpp C:\Users\benar\source\repos\2048-Cpp\2048\2048\2048.cpp
 
 #include <iostream>
 #include <conio.h>
 
-class Tiles
+class Case
 {
 public:
     int iValue;
 
-    Tiles()
+    Case()
     {
         this->iValue = 0;
     }
 
-    ~Tiles()
-    {
-        std::cout << "Tile Destroyed";
-    }
-};
 
-class Case
-{
-public:
-    bool bIsEmpty;
-    int iPositionX, iPositionY;
-    Tiles tTile;
-
-    Case()
-    {
-        this->bIsEmpty = true;
-        this->iPositionX = 0;
-        this->iPositionY = 0;
-    }
 };
 
 class Grid
 {
 public:
     bool bIsFull;
-    Case cGrid[16];
+    Case* cGrid[16];
 
     Grid()
     {
         this->bIsFull = false;
     }
 
-    int convertBiToMonoDimensional( int x, int y)
+    int BiToMono( int x, int y)
     {
         int result= x*4 + y;
         return result;
     }
 
-    int convertMonoToBiDimensional(int i)
+    int* MonoToBi(int i)
     {
-        int array[2];
+        int* array;
         array[0] = i/4;
         array[1] = i%4;
         return array;
@@ -68,27 +50,13 @@ public:
 
     void InitiateGrid()
     {
-        int iX = 0;
-        int iY = 0;
-        for (int i = 0; i < 16; i++)
-        {
-            this->cGrid[i].iPositionX = iX;
-            this->cGrid[i].iPositionY = iY;
-            iY++;
-            if ((i + 1) % 4 == 0)
-            {
-                iX++;
-                iY = 0;
-            }
-        }
-        int iRandomCase;
-        for (int j = 0; j < 2; j++)
-        {
-            iRandomCase = rnd();
-            if (this->cGrid[iRandomCase].tTile.iValue == 0)
-                this->cGrid[iRandomCase].tTile.iValue = 2;
-            else 
-                j--;
+        this->cGrid = new Case[16];
+    }
+
+    void DeleteGrid()
+    {
+        for (int i = 0; i < 16; i++) {
+            delete cGrid[i];
         }
     }
 
@@ -112,7 +80,7 @@ public:
                         std::cout << "|";
                     else
                     {
-                        std::cout << this->cGrid[iCaseNb].tTile.iValue;
+                        std::cout << this->cGrid[iCaseNb].iValue;
                         iCaseNb++;
                     }
                 }
@@ -121,12 +89,25 @@ public:
         }
     }
 
-    void MoveTiles()
-    {
-        for (int i = 0; i < 16; i++) {
-            //Faire le déplacement des tuiles
-        }
-    }
+    /*
+    void linearMove(int x, int y, int* coo, int i = 1) {
+        //Algo qui va bouger une tuile sur une ligne jusqu'a ce quelle trouve un obstacle, récursivement
+        //coo = array de direction ex([1,0],[0,-1])
+        int iDirectionX = coo[0];
+        int iDirectionY = coo[1];
+        if (this->cGrid[this->BiToMono(x + iDirectionX, y + iDirectionY)].iValue != 0)
+            return;
+        else if (x + iDirectionX < 0 || x + iDirectionX > 3 || y + iDirectionY < 0 || y + iDirectionY > 3)
+            return;
+        else
+            this->cGrid[this->BiToMono(x + iDirectionX, y + iDirectionY)] = this->cGrid[this->BiToMono(x, y)];
+            this->cGrid[this->BiToMono(x + iDirectionX, y + iDirectionY)].bIsEmpty = false;
+
+            this->cGrid[this->BiToMono(x, y)].bIsEmpty = true;
+            this->cGrid[this->BiToMono(x, y)].tTile = NULL;
+            
+            linearMove(x + iDirectionX, y + iDirectionY, coo, i++);
+    }*/
 };
 
 class Game
@@ -138,15 +119,7 @@ public:
     Game()
     {
         this->iPoints = 0;
-        this->gGameGrid.InitiateGrid();
-    }
-
-    int UserEntry()
-    {
-        std::cout << "Direction: ";
-        int direction;
-        std::cin >> direction;
-        return direction;
+        //this->gGameGrid.InitiateGrid();
     }
 
     void GameLoop()
@@ -155,35 +128,35 @@ public:
         int iAsciiValue;
         bool bIsGame = true;
         while (bIsGame) {
-            char iDirection = this->UserEntry();
-            std::cout << iDirection << std::endl;
-            //Ci-dessous la condition d'arret de la game loop
-            if (iDirection == 'o') {
-                bIsGame = false;
-            }
 
-            sKey = getch(); 
-            iAsciiValue = key;
-            if (iAsciiValue == 37)
-                std::cout << "Pressed left";
+            sKey = _getch(); 
+            iAsciiValue = sKey;
+                if (iAsciiValue == 75)
+                    std::cout << "Pressed left \n";
+
+                else if (iAsciiValue == 77)
+                    std::cout << "Pressed right \n";
+
+                else if (iAsciiValue == 80)
+                    std::cout << "Pressed down \n";
+
+                else if (iAsciiValue == 72)
+                    std::cout << "Pressed up \n";
+                      
         }
     }
 
 };
 
-void linearMove(Case cases, int i) {
-    //Algo qui va bouger une tuile sur une ligne jusqu'a ce quelle trouve un obstacle, récursivement
 
-}
 
 
 int main()
 {
-    std::cout << "Hello World!\n";
     Grid grid;
     Game game;
     grid.InitiateGrid();
-    grid.PrintGrid();
     game.GameLoop();
+    grid.DeleteGrid();
 }
 
