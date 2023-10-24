@@ -4,6 +4,10 @@
 
 #include <iostream>
 #include <conio.h>
+#include <vector>
+#include <cstdlib>
+
+using namespace std;
 
 class Case
 {
@@ -22,7 +26,7 @@ class Grid
 {
 public:
     bool bIsFull;
-    Case* cGrid[16];
+    Case* cGrid;
 
     Grid()
     {
@@ -43,21 +47,23 @@ public:
         return array;
     }
 
-    int rnd()
+    int rnd(int n)
     {
-        return rand()%15;
+        int iNumber = rand() % n;
+        return iNumber;
     }
 
     void InitiateGrid()
     {
-        this->cGrid = new Case[16];
+        cGrid = new Case[16];
     }
 
     void DeleteGrid()
     {
         for (int i = 0; i < 16; i++) {
-            delete cGrid[i];
+            delete this->cGrid;
         }
+
     }
 
     void PrintGrid()
@@ -108,6 +114,26 @@ public:
             
             linearMove(x + iDirectionX, y + iDirectionY, coo, i++);
     }*/
+
+    vector<int> ListEmptyCases() {
+        //Renvoie la liste des indices dont les valeurs sont 0
+        vector<int> vAray;
+
+        for (int i = 0; i < 16; i++) {
+            if (this->cGrid[i].iValue == 0)
+                vAray.push_back(i);
+        }
+
+        return vAray;
+    }
+
+    void randNumber() {
+        vector<int> iTab = this->ListEmptyCases();
+        int iSize = iTab.size();
+        int iRandomNumber = iTab[this->rnd(iSize)];
+        
+        this->cGrid[iRandomNumber].iValue = 2;
+    }
 };
 
 class Game
@@ -119,7 +145,7 @@ public:
     Game()
     {
         this->iPoints = 0;
-        //this->gGameGrid.InitiateGrid();
+        this->gGameGrid.InitiateGrid();
     }
 
     void GameLoop()
@@ -128,6 +154,9 @@ public:
         int iAsciiValue;
         bool bIsGame = true;
         while (bIsGame) {
+
+
+            this->gGameGrid.PrintGrid();
 
             sKey = _getch(); 
             iAsciiValue = sKey;
@@ -143,7 +172,10 @@ public:
                 else if (iAsciiValue == 72)
                     std::cout << "Pressed up \n";
                       
+                if (iAsciiValue == 27)
+                    bIsGame = false;
         }
+        this->gGameGrid.DeleteGrid();
     }
 
 };
@@ -155,8 +187,8 @@ int main()
 {
     Grid grid;
     Game game;
-    grid.InitiateGrid();
+    game.gGameGrid.randNumber();
     game.GameLoop();
-    grid.DeleteGrid();
+    
 }
 
