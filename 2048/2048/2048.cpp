@@ -46,6 +46,25 @@ public:
         this->bIsFull = false;
     }
 
+    int convertBiToMonoDimensional( int x, int y)
+    {
+        int result= x*4 + y;
+        return result;
+    }
+
+    int convertMonoToBiDimensional(int i)
+    {
+        int array[2];
+        array[0] = i/4;
+        array[1] = i%4;
+        return array;
+    }
+
+    int rnd()
+    {
+        return rand()%15;
+    }
+
     void InitiateGrid()
     {
         int iX = 0;
@@ -60,6 +79,15 @@ public:
                 iX++;
                 iY = 0;
             }
+        }
+        int iRandomCase;
+        for (int j = 0; j < 2; j++)
+        {
+            iRandomCase = rnd();
+            if (this->cGrid[iRandomCase].tTile.iValue == 0)
+                this->cGrid[iRandomCase].tTile.iValue = 2;
+            else 
+                j--;
         }
     }
 
@@ -111,6 +139,19 @@ public:
         int direction;
         std::cin >> direction;
         return direction;
+    }
+
+    void GameLoop()
+    {
+        bool bIsGame = true;
+        while (bIsGame) {
+            char iDirection = this->UserEntry();
+            std::cout << iDirection << std::endl;
+            //Ci-dessous la condition d'arret de la game loop
+            if (iDirection == 'o') {
+                bIsGame = false;
+            }
+        }
     }
 
 };
