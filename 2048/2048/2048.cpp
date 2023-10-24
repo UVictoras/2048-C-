@@ -3,6 +3,7 @@
 // C:\Users\barhancet\source\repos\2048-Cpp\2048\2048\2048.cpp
 
 #include <iostream>
+#include <conio.h>
 
 class Tiles
 {
@@ -143,6 +144,8 @@ public:
 
     void GameLoop()
     {
+        char sKey;
+        int iAsciiValue;
         bool bIsGame = true;
         while (bIsGame) {
             char iDirection = this->UserEntry();
@@ -151,6 +154,11 @@ public:
             if (iDirection == 'o') {
                 bIsGame = false;
             }
+
+            sKey = getch(); 
+            iAsciiValue = key;
+            if (iAsciiValue == 37)
+                std::cout << "Pressed left";
         }
     }
 
