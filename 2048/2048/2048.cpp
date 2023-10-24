@@ -119,6 +119,13 @@ public:
             std::cout << "\n";
         }
     }
+
+    void MoveTiles()
+    {
+        for (int i = 0; i < 16; i++) {
+            //Faire le déplacement des tuiles
+        }
+    }
 };
 
 class Game
@@ -156,6 +163,11 @@ public:
 
 };
 
+void linearMove(Case cases, int i) {
+    //Algo qui va bouger une tuile sur une ligne jusqu'a ce quelle trouve un obstacle, récursivement
+
+}
+
 
 int main()
 {
@@ -164,6 +176,6 @@ int main()
     Game game;
     grid.InitiateGrid();
     grid.PrintGrid();
-    int direction = game.UserEntry();
+    game.GameLoop();
 }
 
