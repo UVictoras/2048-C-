@@ -11,7 +11,7 @@ public:
 
     Tiles()
     {
-        this->iValue = 2;
+        this->iValue = 0;
     }
 
     ~Tiles()
@@ -65,6 +65,7 @@ public:
 
     void PrintGrid()
     {
+        int iCaseNb = 0;
         for (int i = 0; i < 9; i++)
         {
             for (int j = 0; j < 9; j++)
@@ -81,7 +82,10 @@ public:
                     if (j%2 == 0)
                         std::cout << "|";
                     else
-                        std::cout << "0";
+                    {
+                        std::cout << this->cGrid[iCaseNb].tTile.iValue;
+                        iCaseNb++;
+                    }
                 }
             }
             std::cout << "\n";

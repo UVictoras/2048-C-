@@ -1,0 +1,10 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "tâche-2048",
+      "appliesTo": "2048/2048/2048.cpp",
+      "type": "launch"
+    }
+  ]
+}
