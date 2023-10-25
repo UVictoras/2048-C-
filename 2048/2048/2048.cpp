@@ -22,8 +22,6 @@ public:
     {
         this->iValue = 0;
     }
-
-
 };
 
 class Grid
@@ -116,6 +114,45 @@ public:
         }
     }
 
+    int MoveRight(int iIndex)
+    {
+
+        if (this->cGrid[iIndex + 1].iValue == 0 && (iIndex-3) % 4 != 0)
+        {
+            return this->MoveLeft(iIndex + 1);
+        }
+        else 
+        {
+            return iIndex;
+        }
+    }
+
+    int MoveDown(int iIndex)
+    {
+
+        if (this->cGrid[iIndex + 4].iValue == 0 && iIndex < 12)
+        {
+            return this->MoveLeft(iIndex + 4);
+        }
+        else 
+        {
+            return iIndex;
+        }
+    }
+
+    int MoveUp(int iIndex)
+    {
+
+        if (this->cGrid[iIndex - 4].iValue == 0 && iIndex >= 4)
+        {
+            return this->MoveLeft(iIndex - 4);
+        }
+        else 
+        {
+            return iIndex;
+        }
+    }
+
     vector<int> ListEmptyCases() 
     {
         //Renvoie la liste des indices dont les valeurs sont 0
@@ -200,13 +237,52 @@ public:
             }
 
             else if (iAsciiValue == 77)
-                std::cout << "Pressed right \n";
+            for (int i = 0; i < 16; i++)
+            {
+                if ((i-3) % 4 != 0 && this->gGameGrid.cGrid[i].iValue != 0)
+                {
+                    iNewIndex = this->gGameGrid.MoveRight(i);
+                    this->gGameGrid.cGrid[iNewIndex].iValue = this->gGameGrid.cGrid[i].iValue;
+                    this->gGameGrid.cGrid[i].iValue = 0;
+                    if ((iNewIndex-3) % 4 != 0 && this->gGameGrid.cGrid[iNewIndex + 1].iValue == this->gGameGrid.cGrid[iNewIndex].iValue)
+                    {
+                        this->gGameGrid.cGrid[iNewIndex + 1].iValue *= 2;
+                        this->gGameGrid.cGrid[iNewIndex].iValue = 0;
+                    }
+                }
+            }
 
             else if (iAsciiValue == 80)
-                std::cout << "Pressed down \n";
+            for (int i = 0; i < 16; i++)
+            {
+                if (i < 12 && this->gGameGrid.cGrid[i].iValue != 0)
+                {
+                    iNewIndex = this->gGameGrid.MoveDown(i);
+                    this->gGameGrid.cGrid[iNewIndex].iValue = this->gGameGrid.cGrid[i].iValue;
+                    this->gGameGrid.cGrid[i].iValue = 0;
+                    if (iNewIndex < 12 && this->gGameGrid.cGrid[iNewIndex + 4].iValue == this->gGameGrid.cGrid[iNewIndex].iValue)
+                    {
+                        this->gGameGrid.cGrid[iNewIndex + 4].iValue *= 2;
+                        this->gGameGrid.cGrid[iNewIndex].iValue = 0;
+                    }
+                }
+            }
 
             else if (iAsciiValue == 72)
-                std::cout << "Pressed up \n";
+            for (int i = 0; i < 16; i++)
+            {
+                if (i >= 4 && this->gGameGrid.cGrid[i].iValue != 0)
+                {
+                    iNewIndex = this->gGameGrid.MoveUp(i);
+                    this->gGameGrid.cGrid[iNewIndex].iValue = this->gGameGrid.cGrid[i].iValue;
+                    this->gGameGrid.cGrid[i].iValue = 0;
+                    if (iNewIndex >= 4 && this->gGameGrid.cGrid[iNewIndex - 4].iValue == this->gGameGrid.cGrid[iNewIndex].iValue)
+                    {
+                        this->gGameGrid.cGrid[iNewIndex - 4].iValue *= 2;
+                        this->gGameGrid.cGrid[iNewIndex].iValue = 0;
+                    }
+                }
+            }
                       
             if (iAsciiValue == 27)
                 bIsGame = false;
