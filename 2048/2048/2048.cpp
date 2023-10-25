@@ -1,5 +1,5 @@
 // 2048.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
-// C:\Users\vmartinan\source\repos\2048-Cpp\2048\2048 C:\Users\vicma\source\repos\2048-Cpp\2048\2048
+// C:\Users\vmartinan\source\repos\projet\2048\2048 C:\Users\vicma\source\repos\2048-Cpp\2048\2048
 // C:\Users\barhancet\source\repos\2048-Cpp\2048\2048\2048.cpp C:\Users\benar\source\repos\2048-Cpp\2048\2048\2048.cpp
 
 #include <iostream>
@@ -28,6 +28,7 @@ public:
     bool bIsFull;
     Case* cGrid;
 
+
     Grid()
     {
         this->bIsFull = false;
@@ -47,7 +48,7 @@ public:
         return array;
     }
 
-    int rnd(int n)
+    int Rnd(int n)
     {
         int iNumber = rand() % n;
         return iNumber;
@@ -56,6 +57,7 @@ public:
     void InitiateGrid()
     {
         cGrid = new Case[16];
+
     }
 
     void DeleteGrid()
@@ -94,32 +96,27 @@ public:
             std::cout << "\n";
         }
     }
+    
+    int MoveLeft(int iIndex)
+    {
 
-    /*
-    void linearMove(int x, int y, int* coo, int i = 1) {
-        //Algo qui va bouger une tuile sur une ligne jusqu'a ce quelle trouve un obstacle, récursivement
-        //coo = array de direction ex([1,0],[0,-1])
-        int iDirectionX = coo[0];
-        int iDirectionY = coo[1];
-        if (this->cGrid[this->BiToMono(x + iDirectionX, y + iDirectionY)].iValue != 0)
-            return;
-        else if (x + iDirectionX < 0 || x + iDirectionX > 3 || y + iDirectionY < 0 || y + iDirectionY > 3)
-            return;
-        else
-            this->cGrid[this->BiToMono(x + iDirectionX, y + iDirectionY)] = this->cGrid[this->BiToMono(x, y)];
-            this->cGrid[this->BiToMono(x + iDirectionX, y + iDirectionY)].bIsEmpty = false;
+        if (this->cGrid[iIndex - 1].iValue == 0 && iIndex % 4 != 0)
+        {
+            return this->MoveLeft(iIndex - 1);
+        }
+        else 
+        {
+            return iIndex;
+        }
+    }
 
-            this->cGrid[this->BiToMono(x, y)].bIsEmpty = true;
-            this->cGrid[this->BiToMono(x, y)].tTile = NULL;
-            
-            linearMove(x + iDirectionX, y + iDirectionY, coo, i++);
-    }*/
-
-    vector<int> ListEmptyCases() {
+    vector<int> ListEmptyCases() 
+    {
         //Renvoie la liste des indices dont les valeurs sont 0
         vector<int> vAray;
 
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < 16; i++) 
+        {
             if (this->cGrid[i].iValue == 0)
                 vAray.push_back(i);
         }
@@ -127,12 +124,19 @@ public:
         return vAray;
     }
 
-    void randNumber() {
+    void RandNumber() 
+    {
         vector<int> iTab = this->ListEmptyCases();
         int iSize = iTab.size();
-        int iRandomNumber = iTab[this->rnd(iSize)];
+        int iRandomNumber = iTab[this->Rnd(iSize)];
         
-        this->cGrid[iRandomNumber].iValue = 2;
+        this->cGrid[15].iValue = 2;
+        this->cGrid[14].iValue = 2;
+    }
+
+    Case& operator[](int index)
+    {
+        return cGrid[index];
     }
 };
 
@@ -150,6 +154,7 @@ public:
 
     void GameLoop()
     {
+        int iNewIndex;
         char sKey;
         int iAsciiValue;
         bool bIsGame = true;
@@ -160,35 +165,50 @@ public:
 
             sKey = _getch(); 
             iAsciiValue = sKey;
-                if (iAsciiValue == 75)
-                    std::cout << "Pressed left \n";
 
-                else if (iAsciiValue == 77)
-                    std::cout << "Pressed right \n";
+            if (iAsciiValue == 75)
+            {
+                for (int i = 0; i < 16; i++)
+                {
+                    if (i % 4 != 0 && this->gGameGrid.cGrid[i].iValue != 0)
+                    {
+                        iNewIndex = this->gGameGrid.MoveLeft(i);
+                        this->gGameGrid.cGrid[iNewIndex].iValue = this->gGameGrid.cGrid[i].iValue;
+                        this->gGameGrid.cGrid[i].iValue = 0;
+                        if (iNewIndex % 4 != 0 && this->gGameGrid.cGrid[iNewIndex - 1].iValue == this->gGameGrid.cGrid[iNewIndex].iValue)
+                        {
+                            this->gGameGrid.cGrid[iNewIndex - 1].iValue *= 2;
+                            this->gGameGrid.cGrid[iNewIndex].iValue = 0;
+                        }
+                    }
+                }
+            }
 
-                else if (iAsciiValue == 80)
-                    std::cout << "Pressed down \n";
+            else if (iAsciiValue == 77)
+                std::cout << "Pressed right \n";
 
-                else if (iAsciiValue == 72)
-                    std::cout << "Pressed up \n";
+            else if (iAsciiValue == 80)
+                std::cout << "Pressed down \n";
+
+            else if (iAsciiValue == 72)
+                std::cout << "Pressed up \n";
                       
-                if (iAsciiValue == 27)
-                    bIsGame = false;
+            if (iAsciiValue == 27)
+                bIsGame = false;
+
+            system("cls");
+
         }
         this->gGameGrid.DeleteGrid();
     }
 
 };
 
-
-
-
 int main()
 {
     Grid grid;
     Game game;
-    game.gGameGrid.randNumber();
+    game.gGameGrid.RandNumber();
     game.GameLoop();
     
 }
-
