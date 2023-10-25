@@ -30,7 +30,7 @@ class Grid
 {
 public:
     bool bIsFull;
-    Case** cGrid;
+    Case* cGrid;
 
 
     Grid()
@@ -64,6 +64,7 @@ public:
 
     }
 
+    /*
     void DeleteGrid()
     {
         for (int i = 0; i < 16; i++) {
@@ -71,7 +72,7 @@ public:
         }
         free(cGrid);
 
-    }
+    }*/
 
     void PrintGrid()
     {
@@ -93,7 +94,7 @@ public:
                         std::cout << "|";
                     else
                     {
-                        std::cout << this->cGrid[iCaseNb]->iValue;
+                        std::cout << this->cGrid[iCaseNb].iValue;
                         iCaseNb++;
                     }
                 }
@@ -135,13 +136,21 @@ public:
         int iSize = iTab.size();
         int iRandomNumber = iTab[this->Rnd(iSize)];
         
-        this->cGrid[15].iValue = 2;
-        this->cGrid[14].iValue = 2;
+        this->cGrid[iRandomNumber].iValue = 2;
     }
 
     Case& operator[](int index)
     {
         return cGrid[index];
+    }
+
+    bool isFull() {
+        for (int i = 0; i < 16; i++) {
+            if (this->cGrid[i].iValue == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 };
 
@@ -165,6 +174,7 @@ public:
         bool bIsGame = true;
         while (bIsGame) {
 
+            this->gGameGrid.RandNumber();
 
             this->gGameGrid.PrintGrid();
 
@@ -203,8 +213,13 @@ public:
 
             system("cls");
 
+            if (this->gGameGrid.isFull() == true) {
+                break;
+            }
+
         }
-        this->gGameGrid.DeleteGrid();
+        cout << "You loose";
+        //this->gGameGrid.DeleteGrid();
     }
 
 };
@@ -214,8 +229,7 @@ int main()
     srand(time(NULL));
     Grid grid;
     Game game;
-    game.gGameGrid.RandNumber();
     game.GameLoop();
-    game.gGameGrid.DeleteGrid();
+    //game.gGameGrid.DeleteGrid();
 }
 
