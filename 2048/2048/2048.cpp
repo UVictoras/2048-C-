@@ -2,12 +2,16 @@
 // C:\Users\vmartinan\source\repos\projet\2048\2048 C:\Users\vicma\source\repos\2048-Cpp\2048\2048
 // C:\Users\barhancet\source\repos\2048-Cpp\2048\2048\2048.cpp C:\Users\benar\source\repos\2048-Cpp\2048\2048\2048.cpp
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <iostream>
 #include <conio.h>
 #include <vector>
-#include <cstdlib>
 
 using namespace std;
+
+
 
 class Case
 {
@@ -26,7 +30,7 @@ class Grid
 {
 public:
     bool bIsFull;
-    Case* cGrid;
+    Case** cGrid;
 
 
     Grid()
@@ -63,8 +67,9 @@ public:
     void DeleteGrid()
     {
         for (int i = 0; i < 16; i++) {
-            delete this->cGrid;
+            delete this->cGrid[i];
         }
+        free(cGrid);
 
     }
 
@@ -88,7 +93,7 @@ public:
                         std::cout << "|";
                     else
                     {
-                        std::cout << this->cGrid[iCaseNb].iValue;
+                        std::cout << this->cGrid[iCaseNb]->iValue;
                         iCaseNb++;
                     }
                 }
@@ -206,9 +211,11 @@ public:
 
 int main()
 {
+    srand(time(NULL));
     Grid grid;
     Game game;
     game.gGameGrid.RandNumber();
     game.GameLoop();
-    
+    game.gGameGrid.DeleteGrid();
 }
+
