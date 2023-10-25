@@ -2,12 +2,16 @@
 // C:\Users\vmartinan\source\repos\2048-Cpp\2048\2048 C:\Users\vicma\source\repos\2048-Cpp\2048\2048
 // C:\Users\barhancet\source\repos\2048-Cpp\2048\2048\2048.cpp C:\Users\benar\source\repos\2048-Cpp\2048\2048\2048.cpp
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <iostream>
 #include <conio.h>
 #include <vector>
-#include <cstdlib>
 
 using namespace std;
+
+
 
 class Case
 {
@@ -185,6 +189,7 @@ public:
 
 int main()
 {
+    srand(time(NULL));
     Grid grid;
     Game game;
     game.gGameGrid.randNumber();
