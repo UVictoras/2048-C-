@@ -30,7 +30,7 @@ class Grid
 {
 public:
     bool bIsFull;
-    Case* cGrid;
+    Case** cGrid;
 
     Grid()
     {
@@ -59,14 +59,18 @@ public:
 
     void InitiateGrid()
     {
-        cGrid = new Case[16];
+        cGrid = (Case**)malloc(sizeof(Case*) * 16);
+        for (int i = 0; i < 16; i++) {
+            cGrid[i] = new Case();
+        }
     }
 
     void DeleteGrid()
     {
         for (int i = 0; i < 16; i++) {
-            delete this->cGrid;
+            delete this->cGrid[i];
         }
+        free(cGrid);
 
     }
 
@@ -90,7 +94,7 @@ public:
                         std::cout << "|";
                     else
                     {
-                        std::cout << this->cGrid[iCaseNb].iValue;
+                        std::cout << this->cGrid[iCaseNb]->iValue;
                         iCaseNb++;
                     }
                 }
@@ -124,7 +128,7 @@ public:
         vector<int> vAray;
 
         for (int i = 0; i < 16; i++) {
-            if (this->cGrid[i].iValue == 0)
+            if (this->cGrid[i]->iValue == 0)
                 vAray.push_back(i);
         }
 
@@ -136,7 +140,7 @@ public:
         int iSize = iTab.size();
         int iRandomNumber = iTab[this->rnd(iSize)];
         
-        this->cGrid[iRandomNumber].iValue = 2;
+        this->cGrid[iRandomNumber]->iValue = 2;
     }
 };
 
@@ -194,6 +198,6 @@ int main()
     Game game;
     game.gGameGrid.randNumber();
     game.GameLoop();
-    
+    game.gGameGrid.DeleteGrid();
 }
 
