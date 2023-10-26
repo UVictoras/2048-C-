@@ -79,19 +79,39 @@ public:
         int iCaseNb = 0;
         for (int i = 0; i < 9; i++)
         {
-            for (int j = 0; j < 9; j++)
+            if (i % 2 == 0)
             {
-                if (i%2 == 0)
+                std::cout << "---------------------"; 
+            }
+            else
+            {
+                for (int j = 0; j < 9; j++)
                 {
-                    std::cout << "-";
-                }
-                else
-                {
-                    if (j%2 == 0)
+                    if (j % 2 == 0)
                         std::cout << "|";
                     else
                     {
-                        std::cout << this->cGrid[iCaseNb].iValue;
+                        if (this->cGrid[iCaseNb].iValue < 10 && this->cGrid[iCaseNb].iValue > 0)
+                        {
+                            std::cout << "  " << this->cGrid[iCaseNb].iValue << " ";
+                        }
+                        else if (this->cGrid[iCaseNb].iValue < 100 && this->cGrid[iCaseNb].iValue > 10)
+                        {
+                            std::cout << " " << this->cGrid[iCaseNb].iValue << " ";
+                        }
+                        else if (this->cGrid[iCaseNb].iValue > 100 && this->cGrid[iCaseNb].iValue < 1000)
+                        {
+                            std::cout << " " << this->cGrid[iCaseNb].iValue;
+                        }
+                        else if (this->cGrid[iCaseNb].iValue > 1000)
+                        {
+                            std::cout << this->cGrid[iCaseNb].iValue;
+                        }
+                        else if (this->cGrid[iCaseNb].iValue == 0)
+                        {
+                            std::cout << "    ";
+                        }
+
                         iCaseNb++;
                     }
                 }
@@ -209,6 +229,18 @@ public:
         }
         return true;
     }
+
+    bool Win()
+    {
+        for (int p = 0; p < 16; p++)
+        {
+            if (this->cGrid[p].iValue == 2048)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 };
 
 class Game
@@ -227,7 +259,7 @@ public:
     {
         int iNewIndex, iTemp, iAsciiValue, iScore = 0;
         char sKey; // Initiating our char variable which will be use to get the pressed key
-        bool bIsGame = true;
+        bool bIsGame = true, isWin = false;
         this->gGameGrid.cGrid[0].iValue = 2;
         this->gGameGrid.cGrid[1].iValue = 4;
         this->gGameGrid.cGrid[2].iValue = 2;
@@ -244,6 +276,12 @@ public:
 
             if (this->gGameGrid.isFull() == true && this->gGameGrid.noPossibility() == true)  // Checking if the grid is full of tiles and if there is no movement possible, if so we end the game.
             { 
+                break;
+            }
+
+            if (this->gGameGrid.Win() == true)
+            {
+                isWin = true;
                 break;
             }
 
@@ -341,7 +379,15 @@ public:
 
             system("cls"); // Clearing the console logs 
         }
-        cout << "You loose";
+        if (isWin == false)
+        {
+            cout << "You loose";
+        }
+        else
+        {
+            std::cout << "You won !";
+        }
+
         //this->gGameGrid.DeleteGrid();
     }
 
